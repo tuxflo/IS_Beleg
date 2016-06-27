@@ -285,9 +285,22 @@ int main (void)
       printf("error encrypt final\n");
       exit(EXIT_FAILURE);
     }
-    int final_hash_len = encbuffer + final;
+    int final_hash_len = enclen + final;
     printf("final done\n");
     printf("encrypted hash: %s\n", encbuffer);
+
+    hashfile = fopen("./hashenc", "wb");
+    if(hashfile == NULL)
+    {
+      printf("error opening hashfile(encrypted)\n");
+      exit(EXIT_FAILURE);
+    }
+    if(1 != fwrite(encbuffer, final_hash_len, 1, hashfile))
+    {
+      printf("error writing hashfile\n");
+      exit(EXIT_FAILURE);
+    }
+    fclose(hashfile);
 
     free(plaintextbuffer);
   return 0;
